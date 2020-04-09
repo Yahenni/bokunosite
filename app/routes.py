@@ -11,9 +11,21 @@ def index():
 
 @app.route('/kirill')
 def kirill():
+    if "Mozilla" not in request.headers.get('User-Agent'):
+        browser = "chrome"
+    else:
+        browser = "firefox"
+    links_on_addon = {
+        "firefox": "https://addons.mozilla.org/en-US/firefox/"
+                   "addon/live-editor-for-css-less-sass/?src=search",
+        "chrome": "https://chrome.google.com/webstore/detail/lil"
+                  "ve-editor-for-css-less/ifhikkcafabcgolfjegfcgloomalapol"
+    }
     return render_template(
         "specialpersons/kirill.html",
-        title="Главный пидорас"
+        title="Главный пидорас",
+        browser=browser,
+        addon=links_on_addon
     )
 
 
