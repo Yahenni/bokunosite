@@ -11,7 +11,7 @@ def index():
 
 @app.route('/kirill')
 def kirill():
-    if "Mozilla" not in request.headers.get('User-Agent'):
+    if "Firefox" not in request.headers.get('User-Agent'):
         browser = "chrome"
     else:
         browser = "firefox"
