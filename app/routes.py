@@ -44,3 +44,8 @@ def aboutme():
         useragent=useragent,
         ip=ip
     )
+
+
+@app.route('/trash')
+def trash():
+    return redirect("https://2ch.hk/ga/")
