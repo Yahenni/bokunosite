@@ -1,6 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+#corner {
+  border-radius: 25px;
+  background-position: left top;
+  background-repeat: repeat;
+  padding: 20px; 
+  width: 200px;
+  height: 150px;  
+}
+
+.content {
+    margin-left: 2.5em;
+    text-align: justify;
+    padding-left: 4px;
+    background-color: #DDDDDD;
+    border: 1px solid #888;
+}
+</style>
 	<div class="jumbotron-fluid">
 		<div class="container">
   	<h2 class="display-4"><span class="badge badge-secondary">MIT</span> Boku no site</h2>
@@ -18,5 +36,21 @@
 </div>
   </div>
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr class="my-4">
+<div class="content">
+	<br>
+	<center>
+		<img id="corner" src="static/kot.jpg" alt="Kot" style="
+			height: 300px;
+			width: 500px;
+			">
+	</center>
+	<br>
+</div>
+<br>
 {% endblock %}
-
