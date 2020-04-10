@@ -1,12 +1,17 @@
 from flask import render_template, flash, redirect, url_for, request
 
-from app import app
+from app import app, db
+from app.models import Section, Article
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template("index.html", title="Index Page")
+    return render_template(
+        "index.html",
+        title="Index Page",
+        sections=Section.query.all()
+    )
 
 
 @app.route('/kirill')
@@ -50,3 +55,7 @@ def aboutme():
 @app.route('/trash')
 def trash():
     return redirect("https://2ch.hk/ga/")
+
+@app.route('/section/<shortname>')
+def section(shortname):
+    return 'Ты на {}, друг!'.format(shortname)
