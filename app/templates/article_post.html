@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% from 'bootstrap/form.html' import render_form, render_field, render_form_row %}
+
+{% block content %}
+<form method="post">
+{{ form.csrf_token }}
+{{ render_field(form.username) }}
+{{ render_field(form.section) }}
+{{ render_field(form.password) }}
+{{ render_field(form.confirm) }}
+{{ render_field(form.title) }}
+{{ render_field(form.data) }}
+{{ render_field(form.submit) }}
+{{ render_field(form.preview) }}
+</form>
+{% endblock %}

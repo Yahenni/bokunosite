@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 
 from app import app, db
 from app.models import Section, Article
+from app.forms import ArticlePostForm
 
 
 @app.route('/')
@@ -68,3 +69,25 @@ def section(shortname):
 @app.route('/section/<shortname>/<article_id>')
 def article(shortname, article_id):
     return render_template('article.html', article=Article.query.get(article_id))
+
+@app.route('/section/post', methods=['POST', 'GET'])
+def article_post():
+    form = ArticlePostForm()
+    form.section.choices = [
+        (s.id, s.longname) for s in Section.query.all()
+    ]
+    if form.preview.data:
+        flash(form.preview.data)
+    if form.confirm.data:
+        article = Article(
+            markdown_body=form.data.data,
+            title=form.title.data,
+            section_id=form.section.data
+        )
+        article.create_tripcode(form.password.data)
+        article.create_html()
+        db.session.add(article)
+        db.session.commit()
+        flash('Успешно отправлено!')
+        return redirect(url_for('index'))
+    return render_template('article_post.html', form=form)

@@ -1,5 +1,8 @@
 from datetime import datetime
 
+from werkzeug.security import generate_password_hash
+from markdown import markdown
+
 from app import db
 
 
@@ -21,6 +24,12 @@ class Article(db.Model):
     tripcode = db.Column(db.String(128), index=True)
     title = db.Column(db.String(128))
     section_id = db.Column(db.Integer, db.ForeignKey('section.id'))
+
+    def create_tripcode(self, password):
+        self.tripcode = generate_password_hash(password)[-6:]
+
+    def create_html(self):
+        self.html_body = markdown(self.markdown_body)
 
     def __repr__(self):
         return 'Article <{}>'.format(self.id)
