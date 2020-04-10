@@ -24,9 +24,10 @@ class Article(db.Model):
     tripcode = db.Column(db.String(128), index=True)
     title = db.Column(db.String(128))
     section_id = db.Column(db.Integer, db.ForeignKey('section.id'))
+    poster_name = db.Column(db.String(64))
 
     def create_tripcode(self, password):
-        self.tripcode = generate_password_hash(password)[-6:]
+        self.tripcode = generate_password_hash(password)[-12:]
 
     def create_html(self):
         self.html_body = markdown(self.markdown_body)

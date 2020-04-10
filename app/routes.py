@@ -80,7 +80,8 @@ def article_post():
         article = Article(
             markdown_body=form.data.data,
             title=form.title.data,
-            section_id=form.section.data
+            section_id=form.section.data,
+            poster_name=form.username.data
         )
         article.create_tripcode(form.password.data)
         article.create_html()

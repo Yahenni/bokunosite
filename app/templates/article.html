@@ -2,6 +2,11 @@
 
 {% block content %}
 <h1>{{ article.title }}</h1>
+<p class="text-secondary" style="display:inline;">Автор: {{ article.poster_name }} (</p>
+<p class="text-success" style="display:inline;">{{ article.tripcode }}</p>
+<p class="text-secondary" style="display:inline;">)</p>
+<p class="text-secondary" style="display:inline;">Время: {{ article.timestamp }}</p>
+<hr class="my-2">
 {% autoescape off %}
 {{ article.html_body }}
 {% endautoescape %}
