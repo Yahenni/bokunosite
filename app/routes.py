@@ -56,6 +56,15 @@ def aboutme():
 def trash():
     return redirect("https://2ch.hk/ga/")
 
+
 @app.route('/section/<shortname>')
 def section(shortname):
-    return 'Ты на {}, друг!'.format(shortname)
+    return render_template(
+        'section.html',
+        section=Section.query.filter_by(shortname=shortname).first_or_404(),
+    )
+
+
+@app.route('/section/<shortname>/<article_id>')
+def article(shortname, article_id):
+    return render_template('article.html', article=Article.query.get(article_id))

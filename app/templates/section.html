@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Раздел - {{ section.longname }}</h3>
+{% if section.articles.all() %}
+{% for article in section.articles.all() %}
+<ul>
+	<li><a href="{{ url_for(
+		     'article',
+		     shortname=section.shortname,
+		     article_id=article.id
+		     ) }}">{{ article.title }}</a>
+	</li>
+<ul>
+{% endfor %}
+{% else %}
+<p>Пока-что тут ничего нет. Увы :(</p>
+<p>{{ section.articles.all() }}</p>
+{% endif %}
+{% endblock %}
+
