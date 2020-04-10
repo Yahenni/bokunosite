@@ -76,9 +76,7 @@ def article_post():
     form.section.choices = [
         (s.id, s.longname) for s in Section.query.all()
     ]
-    if form.preview.data:
-        flash(form.preview.data)
-    if form.confirm.data:
+    if form.validate_on_submit():
         article = Article(
             markdown_body=form.data.data,
             title=form.title.data,
@@ -88,6 +86,5 @@ def article_post():
         article.create_html()
         db.session.add(article)
         db.session.commit()
-        flash('Успешно отправлено!')
         return redirect(url_for('index'))
     return render_template('article_post.html', form=form)
