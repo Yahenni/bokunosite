@@ -25,7 +25,8 @@ def kirill():
         "specialpersons/kirill.html",
         title="Главный пидорас",
         browser=browser,
-        addon=links_on_addon
+        addon=links_on_addon,
+        favicon='specialpersons/kirill/favicon'
     )
 
 
