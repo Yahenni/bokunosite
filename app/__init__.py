@@ -8,9 +8,13 @@ from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 
+config = app.config
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 bootstrap = Bootstrap(app)
+
+from app.api import bp as api_bp
+app.register_blueprint(api_bp, url_prefix='/api')
 
 from app import routes, models

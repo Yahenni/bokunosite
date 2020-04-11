@@ -1,11 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, \
                     BooleanField, SubmitField, \
-                    SelectField, TextAreaField
+                    SelectField, TextAreaField, \
+                    HiddenField
 from wtforms.validators import DataRequired, Length, EqualTo, InputRequired
-
-from app import db
-from app.models import Section
 
 
 class ArticlePostForm(FlaskForm):
@@ -19,6 +17,29 @@ class ArticlePostForm(FlaskForm):
         ]
     )
     confirm = PasswordField('Повторите пароль: ')
-    title = StringField('Название: ', validators=[DataRequired()])
-    data = TextAreaField('Текст: ', validators=[Length(min=0, max=3000)])
+    title = StringField(
+        'Название: ',
+        validators=[DataRequired(), Length(min=3, max=80)])
+    description = TextAreaField(
+        'Описание (опционально): ',
+        validators=[Length(min=0, max=300)],
+        render_kw={
+            "minlength":"0",
+            "maxlength":"300",
+        }
+    )
+    data = TextAreaField(
+        'Текст: ',
+        validators=[DataRequired(), Length(min=0, max=3000)],
+        render_kw={
+            "minlength":"0",
+            "maxlength":"3000",
+            "rows":"8"
+        }
+    )
+    check = SubmitField(
+        "Проверить",
+        render_kw={"id": "captcha-validate"}
+    )
+    hash = HiddenField(label=None)
     submit = SubmitField("Отправить")

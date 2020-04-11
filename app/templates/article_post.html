@@ -4,13 +4,123 @@
 
 {% block content %}
 <form method="post">
-{{ form.csrf_token }}
-{{ render_field(form.username) }}
-{{ render_field(form.section) }}
-{{ render_field(form.password) }}
-{{ render_field(form.confirm) }}
+{{ form.hidden_tag(form.csrf_token, form.hash) }}
+<div class="row">
+	<div class="col-8">
+		{{ render_field(form.username) }}
+		{{ render_field(form.section) }}
+		{{ render_field(form.password) }}
+		{{ render_field(form.confirm) }}
+	</div>
+	<div class="col-4">
+		<div class="card" style="width:100%; margin-top:15px;">
+			<div class="card-header">
+				<img id="captcha-img" src="/static/captcha/d73e41ef50ab.png" alt="captcha" class="img-thumbnail mx-auto d-block">
+			</div>
+			<div class="card-body">
+				<h5>Капча: </h5>
+				<div class="form-group">
+					<input name="input" type="text" value="" class="form-control" id="captcha-text" required maxlength="6" minlength="6">
+					<div class="invalid-feedback" id="captcha-feedback">Пожалуйста, введите капчу</div>
+				</div>
+				<div role="group" class="btn-group d-flex justify-content-center">
+					<button type="button" id="captcha-validate" class="btn btn-primary" required>Проверить</button>
+					<button type="button" id="captcha-refresh" class="btn btn-success">Обновить</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {{ render_field(form.title) }}
+{{ render_field(form.description) }}
 {{ render_field(form.data) }}
 {{ render_field(form.submit) }}
 </form>
+
+  <script type="text/javascript">
+    document.getElementById("captcha-text").value=""
+    var hashkey = null;
+    var get_captcha = function () {
+      var jqxhr = $.ajax("/api/captcha/", {
+        contentType : 'application/json',
+        type: 'GET',
+      })
+       .done(function(data) {
+        $("#captcha-img").attr("src", data.image_url);
+        hashkey = data.key;
+      })
+      .fail(function() {
+        console.log("error refreshing captcha");
+      });     
+    };
+    var refresh_captcha = function () {
+      var jqxhr = $.ajax("/api/captcha/" + hashkey, {
+        contentType : 'application/json',
+        type: 'GET',
+      })
+      .done(function(data) {
+        $("#captcha-img").attr("src", data.image_url);
+        hashkey = data.key;
+      })
+      .fail(function() {
+        console.log("error refreshing captcha");
+      });
+    };
+    get_captcha();
+    var validation_captcha = function (True=false) {
+      var $form = document.getElementById("captcha-text")
+      var $feedback = document.getElementById("captcha-feedback")
+      if (! $form.checkValidity()) {
+	      $form.classList.add("is-invalid")
+	      if ( $form.value.length == 0 ) {
+                $feedback.innerText="Пожалуйста, введите капчу"
+	      } else if ( $form.value.length != 6 ) {
+		$feedback.innerText="Капча состоит из 6 символов."
+	      };
+
+	};
+	return $form.checkValidity();
+      };
+    validation_captcha();
+
+    $("#captcha-validate").click(function () {
+      if (! validation_captcha()) {return}
+      var text = $("#captcha-text").val();
+      $.ajax("/api/captcha/" + hashkey + "/" + text, {
+        contentType : 'application/json',
+        type: 'GET',
+      })
+      .done(function() {
+        console.log("captcha validated!");
+	document.getElementById("captcha-text").classList.remove("is-invalid");
+	document.getElementById("captcha-text").classList.add("is-valid");
+	document.getElementById("captcha-text").readOnly=true;
+	document.getElementById("captcha-refresh").disabled=true;
+	document.getElementById("captcha-validate").disabled=true;
+	document.getElementById("hash").value=hashkey;
+      })
+      .fail(function() {
+        console.log("captcha NOT validated!");
+	document.getElementById("captcha-feedback").innerText="Капча решена не верно. Попробуйте снова."
+        document.getElementById("captcha-text").value=""  		
+        refresh_captcha();
+      });
+    });
+    $("#captcha-refresh").click(function () {
+      var text = $("#captcha-text").val();
+      $.ajax("/api/captcha/" + hashkey + "/", {
+        contentType : 'application/json',
+        type: 'GET',
+      })
+      .done(function() {
+        console.log("captcha validated!");
+
+      })
+      .fail(function() {
+        console.log("captcha NOT refreshed");
+        refresh_captcha();
+      });
+    });
+  </script>
+
 {% endblock %}
