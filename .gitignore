@@ -131,3 +131,4 @@ dmypy.json
 # Bokunosite
 app.db
 migrations
+app/static/captcha/*
