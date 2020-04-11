@@ -6,14 +6,14 @@
 <form method="post">
 {{ form.hidden_tag(form.csrf_token, form.hash) }}
 <div class="row">
-	<div class="col-8">
+	<div class="col-sm-8">
 		{{ render_field(form.username) }}
 		{{ render_field(form.section) }}
 		{{ render_field(form.password) }}
 		{{ render_field(form.confirm) }}
 	</div>
-	<div class="col-4">
-		<div class="card" style="width:100%; margin-top:15px;">
+	<div class="col-sm-4">
+		<div class="card" style="width:100%; margin-top:30px;">
 			<div class="card-header">
 				<img id="captcha-img" src="/static/captcha/d73e41ef50ab.png" alt="captcha" class="img-thumbnail mx-auto d-block">
 			</div>

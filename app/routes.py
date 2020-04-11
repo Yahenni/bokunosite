@@ -59,9 +59,16 @@ def trash():
 
 @app.route('/section/<shortname>')
 def section(shortname):
+    page = request.args.get('page', 1, type=int)
+    section = Section.query.filter_by(shortname=shortname).first_or_404()
+    articles = section.articles.order_by(Article.timestamp.desc()).paginate(
+        page, app.config['ARTICLES_PER_PAGE'], False)
     return render_template(
         'section.html',
-        section=Section.query.filter_by(shortname=shortname).first_or_404(),
+        title="/{}/".format(shortname),
+        section=section,
+        articles=articles.items,
+        pagination=articles
     )
 @app.route('/section/<shortname>/<article_id>')
 def article(shortname, article_id):
