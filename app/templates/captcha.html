@@ -1,0 +1,16 @@
+<div class="card captcha-card">
+	<div class="card-header">
+		<img id="captcha-img" src="" alt="captcha" class="img-thumbnail mx-auto d-block">
+	</div>
+	<div class="card-body">
+		<h5>Капча: </h5>
+		<div class="form-group">
+		<input name="input" type="text" value="" class="form-control" id="captcha-text" required maxlength="6" minlength="6">
+		<div class="invalid-feedback" id="captcha-feedback">Пожалуйста, введите капчу</div>
+	</div>
+		<div role="group" class="btn-group d-flex justify-content-center">
+			<button type="button" id="captcha-validate" class="btn btn-primary" required>Проверить</button>
+			<button type="button" id="captcha-refresh" class="btn btn-success">Обновить</button>
+		</div>
+	</div>
+</div>

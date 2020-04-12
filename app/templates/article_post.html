@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% from 'bootstrap/form.html' import render_form, render_field, render_form_row %}
+{% from 'bootstrap/form.html' import render_field %}
 
 {% block content %}
 <form method="post">
-{{ form.hidden_tag(form.csrf_token, form.hash) }}
+{{ form.hidden_tag(form.csrf_token, form.hash, form.username) }}
 <div class="row">
 	<div class="col-sm-8">
 		{{ render_field(form.username) }}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% from 'bootstrap/form.html' import render_field %}
+
+{% block style %}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="username"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.captcha-card {
+  margin-top: 0px;
+}
+{% endblock %}
+{% block content %}
+<div class="form-signin text-center">
+	{{ render_messages(container=False, dismissible=True) }}
+	<h1 class="h3 mb-3 font-weight-normal">Войдите</h1>
+	<form class="sign-form" method="post">
+	{{ form.hidden_tag(form.csrf_token, form.hash, form.password) }}
+	{% for field in form if field.widget.input_type != 'hidden' %}
+	{% if field.id in ["password", "username"] %}
+	{{ field }}
+	{% else %}
+	<div class="form-group">
+		{{ field }}
+		{% if field.id == "remember_me" %}
+			{{ field.label }}
+		{% endif %}
+	</div>
+	{% endif %}
+	{% endfor %}
+	{% include "captcha.html" %}
+</div>
+<script type="text/javascript" src="{{ url_for('static', filename='js/captcha.js') }}">
+{% endblock %}

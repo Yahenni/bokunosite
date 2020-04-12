@@ -83,7 +83,8 @@ class CaptchaStore(db.Model):
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     privilege = db.Column(db.Integer, default=0)
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String(128), index=True)
+    username = db.Column(db.String(64), unique=True, index=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
