@@ -2,12 +2,13 @@ from datetime import datetime
 from random import choice
 import os
 
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from markdown import markdown
 from captcha.image import ImageCaptcha
 from flask import url_for
+from flask_login import UserMixin
 
-from app import db, config
+from app import db, config, login
 
 
 image = ImageCaptcha(fonts=[config["CAPTCHA_FONT_PATH"]])
@@ -77,3 +78,20 @@ class CaptchaStore(db.Model):
             'static',
             filename='captcha/{}.png'.format(self.hash)
         )
+
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    privilege = db.Column(db.Integer, default=0)
+    password_hash = db.Column(db.String(128))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))

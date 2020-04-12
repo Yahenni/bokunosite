@@ -9,7 +9,9 @@ from app.forms import ArticlePostForm
 @app.route('/index')
 def index():
     return render_template(
-        "index.html", title="Index Page",
+        "index.html",
+        title="Index Page",
+        navbar=True,
         sections=Section.query.all()
     )
 
@@ -31,13 +33,18 @@ def kirill():
         title="Главный пидорас",
         browser=browser,
         addon=links_on_addon,
+        navbar=True,
         favicon='specialpersons/kirill/favicon'
     )
 
 
 @app.route('/yahenni')
 def yahenni():
-    return render_template("specialpersons/yahenni.html", title="Якхенни")
+    return render_template(
+        "specialpersons/yahenni.html",
+        title="Якхенни",
+        navbar=True,
+    )
 
 
 @app.route('/aboutme')
@@ -48,7 +55,8 @@ def aboutme():
         "aboutme.html",
         title="Большой брат",
         useragent=useragent,
-        ip=ip
+        ip=ip,
+        navbar=True,
     )
 
 
@@ -68,13 +76,17 @@ def section(shortname):
         title="/{}/".format(shortname),
         section=section,
         articles=articles.items,
-        pagination=articles
+        pagination=articles,
+        navbar=True,
     )
+
+
 @app.route('/section/<shortname>/<article_id>')
 def article(shortname, article_id):
     return render_template(
         'article.html',
-        article=Article.query.get(article_id)
+        article=Article.query.get(article_id),
+        navbar=True,
     )
 
 
@@ -106,4 +118,5 @@ def article_post():
     return render_template(
         'article_post.html',
         form=form,
+        navbar=True,
     )

@@ -38,6 +38,7 @@
 </head>
 <body>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    {% if navbar %}
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark shadow">
 	<div class="container">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -55,6 +56,7 @@
 	</div>
     </nav>
     <div class="mt-6"></div>
+    {% endif %}
     <main class="container">
         {{ render_messages(container=False, dismissible=True) }}
         {% block content %}{% endblock %}
