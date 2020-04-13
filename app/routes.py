@@ -10,12 +10,10 @@ from app.forms import ArticlePostForm, LoginForm
 @app.route('/')
 @app.route('/index')
 def index():
-    print(current_user.is_anonymous)
     return render_template(
         "index.html",
         title="Index Page",
-        navbar=True,
-        sections=Section.query.all()
+        sections=Section.query.all(),
     )
 
 
@@ -36,7 +34,6 @@ def kirill():
         title="Главный пидорас",
         browser=browser,
         addon=links_on_addon,
-        navbar=True,
         favicon='specialpersons/kirill/favicon'
     )
 
@@ -46,7 +43,6 @@ def yahenni():
     return render_template(
         "specialpersons/yahenni.html",
         title="Якхенни",
-        navbar=True,
     )
 
 
@@ -59,7 +55,6 @@ def aboutme():
         title="Большой брат",
         useragent=useragent,
         ip=ip,
-        navbar=True,
     )
 
 
@@ -68,7 +63,7 @@ def trash():
     return redirect("https://2ch.hk/ga/")
 
 
-@app.route('/section/<shortname>')
+@app.route('/section/<shortname>/')
 def section(shortname):
     page = request.args.get('page', 1, type=int)
     section = Section.query.filter_by(shortname=shortname).first_or_404()
@@ -80,16 +75,18 @@ def section(shortname):
         section=section,
         articles=articles.items,
         pagination=articles,
-        navbar=True,
     )
 
 
 @app.route('/section/<shortname>/<article_id>')
 def article(shortname, article_id):
+    article = Article.query.filter_by(id=article_id).first()
+    if article is None:
+        flash("Такая страница не найдена")
+        return redirect(url_for('section', shortname=shortname))
     return render_template(
         'article.html',
-        article=Article.query.get(article_id),
-        navbar=True,
+        article=article,
     )
 
 
@@ -101,7 +98,14 @@ def article_post():
     ]
     if form.validate_on_submit():
         captcha = CaptchaStore.query.filter_by(
-            hash=form.hash.data).first_or_404()
+            hash=form.hash.data).first()
+        if captcha is None:
+            flash(
+                "Капча неверна. Пожалуйста, решите ее перед отправкой",
+                'error'
+            )
+            return redirect(url_for('article_post'))
+        captcha.remove_picture()
         db.session.delete(captcha)
         db.session.commit()
         article = Article(
@@ -121,7 +125,6 @@ def article_post():
     return render_template(
         'article_post.html',
         form=form,
-        navbar=True,
     )
 
 
@@ -141,6 +144,8 @@ def login():
     return render_template(
         "login.html",
         title="Login",
+        navbar_off=True,
+        message_off=True,
         form=form
     )
 

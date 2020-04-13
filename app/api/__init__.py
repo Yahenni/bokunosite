@@ -2,4 +2,4 @@ from flask import Blueprint
 
 bp = Blueprint('api', __name__)
 
-from app.api import captcha
+from app.api import captcha, articles, errors, tokens

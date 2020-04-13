@@ -1,6 +1,4 @@
-import json
-
-from flask import make_response, redirect, url_for
+from flask import make_response, redirect, url_for, jsonify
 
 from app.api import bp
 from app import db
@@ -15,14 +13,12 @@ def get_captcha():
     db.session.commit()
     print(captcha.image)
 
-    to_json_response = {
+    response = {
         'key': captcha.hash,
         'image_url': captcha.image,
     }
 
-    resp = make_response(json.dumps(to_json_response))
-    resp.content_type = 'application/json'
-    return resp
+    return jsonify(response)
 
 
 @bp.route('/captcha/<hash>')
