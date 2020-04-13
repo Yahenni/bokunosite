@@ -1,7 +1,9 @@
 {% extends "base.html" %}
-
 {% from 'bootstrap/form.html' import render_field %}
 
+{% block style %}
+
+{% endblock style %}
 {% block content %}
 <form method="post">
 {{ form.hidden_tag(form.csrf_token, form.hash, form.username) }}

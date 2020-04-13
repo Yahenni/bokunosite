@@ -121,7 +121,11 @@ def article_post():
         db.session.commit()
         article.format_timestamp()
         db.session.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for(
+            'article',
+            shortname=Section.query.get(article.section_id).shortname,
+            article_id=article.id
+        ))
     return render_template(
         'article_post.html',
         form=form,

@@ -30,16 +30,13 @@ class ArticlePostForm(FlaskForm):
     )
     data = TextAreaField(
         'Текст: ',
-        validators=[DataRequired(), Length(min=0, max=3000)],
+        validators=[DataRequired(), Length(min=0, max=50000)],
         render_kw={
             "minlength": "0",
             "maxlength": "3000",
             "rows": "8"
-        }
-    )
-    check = SubmitField(
-        "Проверить",
-        render_kw={"id": "captcha-validate"}
+        },
+        id="editor"
     )
     hash = HiddenField(label=None)
     submit = SubmitField("Отправить")
@@ -66,6 +63,6 @@ class LoginForm(FlaskForm):
     hash = HiddenField(label=None)
     submit = SubmitField(
         "Войти",
-        render_kw={"class":"btn btn-lg btn-primary btn-block"}
+        render_kw={"class": "btn btn-lg btn-primary btn-block"}
     )
     remember_me = BooleanField("Запомнить меня")
