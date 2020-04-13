@@ -31,8 +31,9 @@
 <figure>
 	{{ article.html_body|safe }}
 </figure>
+{% endblock %}
+{% block scripts %}
 {% if current_user.is_authenticated and current_user.privilege > 0 %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/section/remove_article.js') }}"
 {% endif %}
 {% endblock %}
-

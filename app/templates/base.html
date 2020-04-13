@@ -54,7 +54,7 @@
             <ul class="navbar-nav mr-auto">
 		<a class="navbar-brand" href="#">Boku no Site</a>
                 {{ render_nav_item('index', 'Домой', use_li=True) }}
-		{{ render_nav_item('trash', 'Сральник', use_li=True) }}
+		{{ render_nav_item('section', 'Сральник', use_li=True, shortname="b") }}
 		{{ render_nav_item('article_post', 'Насрать', use_li=True ) }}
             </ul>
 	    <ul class="navbar-nav">
@@ -82,6 +82,7 @@
             <small> &copy; 2020 Boku no Team </a></small>
         {% endblock %}
     </footer>
+    {% block scripts %}{% endblock %}
     {{ bootstrap.load_js() }}
 </body>
 </html>

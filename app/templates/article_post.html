@@ -38,5 +38,8 @@
 {{ render_field(form.data) }}
 {{ render_field(form.submit) }}
 </form>
+{% endblock %}
+{% block scripts %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/captcha.js') }}">
 {% endblock %}
+
