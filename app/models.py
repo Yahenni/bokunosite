@@ -43,7 +43,7 @@ class Article(db.Model):
     def create_html(self):
         self.html_body = markdown(
             self.markdown_body,
-            extras=["break-on-newline"]
+            extras=config['MARKDOWN_EXTRAS']
         )
 
     def format_timestamp(self):

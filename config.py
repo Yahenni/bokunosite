@@ -12,3 +12,7 @@ class Config:
     CAPTCHA_FONT_PATH = os.environ.get('CAPTCHA_FONT_PATH') or \
         os.path.join(basedir, 'app/static/fonts/Roboto-Regular.ttf')
     ARTICLES_PER_PAGE = os.environ.get('ARTICLES_ON_PAGE') or 15
+    CODEMIRROR_LANGUAGES = ['markdown']
+    CODEMIRROR_THEME = '3024-day'
+    WTF_CSRF_ENABLED = True
+    MARKDOWN_EXTRAS = ['break-on-newline']

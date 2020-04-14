@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_codemirror.fields import CodeMirrorField
 from wtforms import StringField, PasswordField, \
                     BooleanField, SubmitField, \
                     SelectField, TextAreaField, \
@@ -28,6 +29,7 @@ class ArticlePostForm(FlaskForm):
             "maxlength": "300",
         }
     )
+    """
     data = TextAreaField(
         'Текст: ',
         validators=[DataRequired(), Length(min=0, max=50000)],
@@ -38,6 +40,8 @@ class ArticlePostForm(FlaskForm):
         },
         id="editor"
     )
+    """
+    data = CodeMirrorField(language='markdown', config={'lineNumbers': 'true'})
     hash = HiddenField(label=None)
     submit = SubmitField("Отправить")
 
