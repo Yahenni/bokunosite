@@ -2,6 +2,7 @@
 {% from 'bootstrap/form.html' import render_field %}
 {% block head %}
 {{ codemirror.include_codemirror() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/friendly.css') }}">
 {% endblock %}
 {% block style %}
 .editor {

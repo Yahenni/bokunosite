@@ -15,4 +15,4 @@ class Config:
     CODEMIRROR_LANGUAGES = ['markdown']
     CODEMIRROR_THEME = '3024-day'
     WTF_CSRF_ENABLED = True
-    MARKDOWN_EXTRAS = ['break-on-newline']
+    MARKDOWN_EXTRAS = ['break-on-newline', 'fenced-code-blocks']
