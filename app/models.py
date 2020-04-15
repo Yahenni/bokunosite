@@ -38,7 +38,7 @@ class Article(db.Model):
     description = db.Column(db.String())
 
     def create_tripcode(self, password):
-        self.tripcode = sha256(password.encode("utf-8"))[:19]
+        self.tripcode = sha256(password.encode("utf-8")).hexdigest()[:19]
 
     def create_html(self):
         self.html_body = markdown(
