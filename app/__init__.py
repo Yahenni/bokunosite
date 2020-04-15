@@ -20,7 +20,12 @@ bootstrap = Bootstrap(app)
 codemirror = CodeMirror(app)
 
 
-from app.api import bp as api_bp
-app.register_blueprint(api_bp, url_prefix='/api')
+from app.base import base
+from app.api import api
+from app.section import section
+from app.auth import auth
 
-from app import routes, models
+BLUEPRINTS = (base, api, section, auth)
+
+for blueprint in BLUEPRINTS:
+    app.register_blueprint(blueprint)

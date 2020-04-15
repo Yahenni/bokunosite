@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% from 'bootstrap/form.html' import render_field %}
+{% block head %}
+{{ codemirror.include_codemirror() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/friendly.css') }}">
+{% endblock %}
+{% block style %}
+.editor {
+
+}
+{% endblock style %}
+{% block content %}
+<form method="post">
+{{ form.hidden_tag(form.csrf_token, form.hash, form.username) }}
+<div class="row">
+	<div class="col-sm-8">
+		{{ render_field(form.username) }}
+		{{ render_field(form.section) }}
+		{{ render_field(form.password) }}
+		{{ render_field(form.confirm) }}
+	</div>
+	<div class="col-sm-4 d-flex">
+		<div class="card" style="width:100%; margin-top:30px;">
+			<div class="card-header">
+				<img id="captcha-img" src="" alt="captcha" class="img-thumbnail mx-auto d-block">
+			</div>
+			<div class="card-body">
+				<h5>Капча: </h5>
+				<div class="form-group">
+					<input name="input" type="text" value="" class="form-control" id="captcha-text" required maxlength="6" minlength="6">
+					<div class="invalid-feedback" id="captcha-feedback">Пожалуйста, введите капчу</div>
+				</div>
+				<div role="group" class="btn-group d-flex justify-content-center">
+					<button type="button" id="captcha-validate" class="btn btn-primary" required>Проверить</button>
+					<button type="button" id="captcha-refresh" class="btn btn-success">Обновить</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{ render_field(form.title) }}
+{{ render_field(form.description) }}
+<div class="mb-3">
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" role="tab" aria-controls="nav-edit" aria-selected="true" href="#nav-edit">Edit</a>
+    <a id="nav-profile-tab" data-toggle="tab" role="tab" aria-controls="nav-preview" aria-selected="false" href="#nav-preview" class="nav-item nav-link">Preview</a>
+    
+  </div>
+</nav>
+<div class="tab-content border border-top-0" id="nav-tabContent">
+	<div class="tab-pane fade show active" id="nav-edit" role="tabpanel" aria-labelledby="nav-home-tab">
+	{% for field in form if field.id == 'data' %}
+		{{ field }}
+	{% endfor %}
+	</div>
+	<div class="tab-pane fade container" id="nav-preview" role="tabpanel" aria-labelledby="nav-profile-tab">
+		<article style="padding: 45px;" id="preview-block">
+			<h4>Идет загрузка, подождите</h4>
+		</article>
+	</div>
+</div>
+</div>
+<div class="mb-3">
+	{{ render_field(form.submit) }}
+</div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/captcha.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/markdown_preview.js') }}"/></script>
+{% endblock %}
+

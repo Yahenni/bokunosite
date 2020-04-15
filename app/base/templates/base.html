@@ -1,0 +1,89 @@
+{% from 'bootstrap/nav.html' import render_nav_item %}
+{% from 'bootstrap/utils.html' import render_messages %}
+
+<!DOCTYPE html>
+<html class="h-100" lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% if title %}
+    <title>{{ title }} - Boku no site</title>
+    {% else %}
+    <title>Welcome - Boku no Site</title>
+    {% endif %}
+    {% if favicon %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename=favicon + '/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename=favicon + '/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename=favicon + '/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename=favicon + '/site.webmanifest') }}">
+    {% else %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+    {% endif %}
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% block head %}{% endblock %}
+    {{ bootstrap.load_css() }}
+    <style>
+	.scale {
+	transition: 0.6s;
+  	}
+        .scale:hover {
+        transform: scale(1.5);
+        }
+	.mt-6 {
+  	margin-top: 4rem !important;
+	}
+	.captcha-card {
+	margin-top:30px;
+	}
+	{% block style %}{% endblock %}
+  </style>
+</head>
+<body class="d-flex flex-column h-100">
+    {% if navbar_off %}
+    {% else %}
+    <header style="margin-bottom: 3.5rem !important;">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark shadow p-1">
+	<div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+		<a class="navbar-brand" href="#">Boku no Site</a>
+                {{ render_nav_item('base.index', 'Домой', use_li=True) }}
+		{{ render_nav_item('section.feed', 'Сральник', use_li=True, shortname="b") }}
+		{{ render_nav_item('section.post', 'Насрать', use_li=True ) }}
+            </ul>
+	    <ul class="navbar-nav">
+	    {% if current_user.is_authenticated %}
+		    <a class="nav-link" href="{{ url_for('auth.logout') }}">{{ current_user.username }}</a>
+	    {% else %}
+		    <a class="nav-link" href="{{ url_for('auth.login') }}">Anon</a>
+	    {% endif %}
+    	    </ul>
+        </div>
+	</div>
+    </nav>
+    </header>
+    {% endif %}
+    <main class="container">
+	{% if message_off %}
+	{% else %}
+	{{ render_messages(container=False, dismissible=True) }}
+	{% endif %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="text-center mt-auto py-3" style="background-color: #f5f5f5;">
+        {% block footer %}
+            <small> &copy; 2020 Boku no Team </a></small>
+        {% endblock %}
+    </footer>
+    {% block scripts %}{% endblock %}
+    {{ bootstrap.load_js() }}
+</body>
+</html>

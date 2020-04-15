@@ -2,12 +2,12 @@ from flask import jsonify, make_response, url_for, g
 
 from app import db
 from app.models import Article
-from app.api import bp
+from app.api import api
 from app.api.auth import token_auth
 from app.api.errors import not_found, forbidden
 
 
-@bp.route('/article/<int:id>/remove/', methods=['POST'])
+@api.route('/article/<int:id>/remove/', methods=['POST'])
 @token_auth.login_required
 def remove_article(id):
     article = Article.query.filter_by(id=id).first()

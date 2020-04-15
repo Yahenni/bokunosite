@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+#image {
+  border-radius: 25px;
+  background-position: left top;
+  background-repeat: repeat;
+  padding: 20px; 
+  width: 200px;
+  height: 150px;  
+}
+
+</style>
+	<div class="jumbotron-fluid">
+		<div class="container">
+  	<h2 class="display-4"><span class="badge badge-secondary">MIT</span> Boku no site</h2>
+  	<p class="lead">Проект создан и разрабатыватся исключительно для веселья :) </p>
+  	<hr class="my-4">
+  	<p>Ниже представлен список доступных статей.<br>Зверей не кормить.</p>
+	<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Список доступных статей
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/kirill">Кирилл</a>
+    <a class="dropdown-item" href="/yahenni">Якхенни</a>
+  </div>
+</div>
+  </div>
+</div>
+<h4>Список разделов:</h4>
+{% if sections %}
+{% for section in sections %}
+<ul>
+	<li><a href="{{ url_for('section.feed', shortname=section.shortname) }}">{{ section.longname }}</a></li>
+</ul>
+{% endfor %}
+{% else %}
+<p>У-упс! Что-то пошло не так! 0_0</p>
+{% endif %}
+<hr class="my-4">
+	<br>
+	<center>
+		<img class="border rounded img-thumbnail" src="static/kot.png" onclick="window.open(src, '_blank')" alt="Kot" style="
+			height: 300px;
+			width: 500px;
+			">
+	</center>
+	<br>
+<br>
+{% endblock %}

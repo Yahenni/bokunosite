@@ -1,11 +1,11 @@
 from flask import make_response, redirect, url_for, jsonify
 
-from app.api import bp
+from app.api import api
 from app import db
 from app.models import CaptchaStore
 
 
-@bp.route('/captcha/')
+@api.route('/captcha/')
 def get_captcha():
     captcha = CaptchaStore()
     captcha.create_picture()
@@ -17,11 +17,10 @@ def get_captcha():
         'key': captcha.hash,
         'image_url': captcha.image,
     }
-
     return jsonify(response)
 
 
-@bp.route('/captcha/<hash>')
+@api.route('/captcha/<hash>')
 def refresh_captcha(hash):
     captcha = CaptchaStore.query.filter_by(hash=hash).first_or_404()
     db.session.delete(captcha)
@@ -29,7 +28,7 @@ def refresh_captcha(hash):
     return redirect(url_for('api.get_captcha'))
 
 
-@bp.route('/captcha/<hash>/<text>')
+@api.route('/captcha/<hash>/<text>')
 def validate_captcha(hash, text):
     captcha = CaptchaStore.query.filter_by(hash=hash).first_or_404()
     captcha.decided = True
