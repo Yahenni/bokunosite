@@ -12,17 +12,17 @@
     <title>Welcome - Boku no Site</title>
     {% endif %}
     {% if favicon %}
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename=favicon + '/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename=favicon + '/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename=favicon + '/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ url_for('static', filename=favicon + '/site.webmanifest') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('base.static', filename=favicon + '/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('base.static', filename=favicon + '/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('base.static', filename=favicon + '/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('base.static', filename=favicon + '/site.webmanifest') }}">
     {% else %}
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('base.static', filename='favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('base.static', filename='favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('base.static', filename='favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('base.static', filename='base.favicon/site.webmanifest') }}">
     {% endif %}
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" href="{{ url_for('base.static', filename='favicon.ico') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     {% block head %}{% endblock %}
     {{ bootstrap.load_css() }}

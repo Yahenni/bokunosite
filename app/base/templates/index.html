@@ -23,8 +23,6 @@
     Список доступных статей
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/kirill">Кирилл</a>
-    <a class="dropdown-item" href="/yahenni">Якхенни</a>
   </div>
 </div>
   </div>
@@ -42,7 +40,7 @@
 <hr class="my-4">
 	<br>
 	<center>
-		<img class="border rounded img-thumbnail" src="static/kot.png" onclick="window.open(src, '_blank')" alt="Kot" style="
+		<img class="border rounded img-thumbnail" src="{{ url_for('.static', filename='kot.png') }}" onclick="window.open(src, '_blank')" alt="Kot" style="
 			height: 300px;
 			width: 500px;
 			">

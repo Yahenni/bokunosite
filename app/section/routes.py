@@ -33,6 +33,7 @@ def article(shortname, article_id):
         return redirect(url_for('section', shortname=shortname))
     return render_template(
         'article.html',
+        title=article.title,
         article=article,
     )
 
@@ -75,5 +76,6 @@ def post():
         ))
     return render_template(
         'post.html',
+        title="Запостить",
         form=form,
     )

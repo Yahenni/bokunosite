@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/friendly.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('base.static', filename='css/friendly.css') }}">
 {% endblock %}
 {% block content %}
 <h1>{{ article.title }}</h1>
@@ -36,6 +36,6 @@
 {% endblock %}
 {% block scripts %}
 {% if current_user.is_authenticated and current_user.privilege > 0 %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/section/remove_article.js') }}"
+<script type="text/javascript" src="{{ url_for('base.static', filename='js/section/remove_article.js') }}"
 {% endif %}
 {% endblock %}

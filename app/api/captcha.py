@@ -11,7 +11,6 @@ def get_captcha():
     captcha.create_picture()
     db.session.add(captcha)
     db.session.commit()
-    print(captcha.image)
 
     response = {
         'key': captcha.hash,

@@ -82,7 +82,7 @@ class CaptchaStore(db.Model):
             )
         )
         self.image = url_for(
-            'static',
+            'base.static',
             filename='captcha/{}.png'.format(self.hash)
         )
 
