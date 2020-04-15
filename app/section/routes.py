@@ -9,7 +9,6 @@ from app.section import section
 from .forms import ArticlePostForm
 
 
-
 @section.route('/<shortname>/')
 def feed(shortname):
     page = request.args.get('page', 1, type=int)
@@ -66,8 +65,6 @@ def post():
         article.create_tripcode(form.password.data)
         article.create_html()
         db.session.add(article)
-        db.session.commit()
-        article.format_timestamp()
         db.session.commit()
         return redirect(url_for(
             '.article',

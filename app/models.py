@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from random import choice
+from hashlib import sha256
 import base64
 import os
 
@@ -34,11 +35,10 @@ class Article(db.Model):
     title = db.Column(db.String(128))
     section_id = db.Column(db.Integer, db.ForeignKey('section.id'))
     poster_name = db.Column(db.String(64))
-    formated_timestamp = db.Column(db.String(128))
     description = db.Column(db.String())
 
     def create_tripcode(self, password):
-        self.tripcode = generate_password_hash(password)[-12:]
+        self.tripcode = sha256(password.encode("utf-8"))[:19]
 
     def create_html(self):
         self.html_body = markdown(
