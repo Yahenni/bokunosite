@@ -16,6 +16,9 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+        if not user.email_verifed:
+            flash('С начала подтвердите вашу почту.')
+            redirect(url_for('base.index'))
         if user is None or not user.check_password(form.password.data):
             flash('Неправильный пароль или имя пользователя', 'error')
             return redirect(url_for('.login'))
@@ -132,7 +135,7 @@ def change_password(token):
         user.set_password(form.password.data)
         db.session.commit()
         flash("Вы успешно изменили пароль!")
-        return redirect(url_for('login'))
+        return redirect(url_for('.login'))
     return render_template(
         'change_password.html',
         title='Измените пароль',
