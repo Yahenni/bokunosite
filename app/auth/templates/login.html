@@ -58,7 +58,7 @@ body {
 	<form class="sign-form" method="post">
 	{{ form.hidden_tag(form.csrf_token, form.hash, form.password) }}
 	{% for field in form if field.widget.input_type != 'hidden' %}
-	{% if field.id in ["password", "username"] %}
+	{% if field.id in ["password", "username", "email"] %}
 	{{ field }}
 	{% else %}
 	<div class="form-group">
@@ -70,6 +70,11 @@ body {
 	{% endif %}
 	{% endfor %}
 	{% include "captcha.html" %}
+	<p class="mt-3">Забыл пароль? Мы можем <a href="{{ url_for('.reset') }}">помочь</a>.</p>
+	<p class="mt-3">Или может быть <a href="{{ url_for('.signup') }}">зарeгистроваться</a>?</p>
 </div>
+{% endblock %}
+
+{% block scripts %}
 <script type="text/javascript" src="{{ url_for('base.static', filename='js/captcha.js') }}">
 {% endblock %}

@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from time import time
 from random import choice
 from hashlib import sha256
 import base64
@@ -9,6 +10,7 @@ from markdown2 import markdown
 from captcha.image import ImageCaptcha
 from flask import url_for
 from flask_login import UserMixin
+import jwt
 
 from app import db, config, login
 
@@ -74,6 +76,8 @@ class CaptchaStore(db.Model):
             'abcdefghijklmnopqrstuvwxyz1234567890'
         self.value = ''.join(choice(string) for i in range(6))
         self.hash = generate_password_hash(self.value)[-12:]
+        if not os.path.exists(config['CAPTCHA_IMAGE_PATH']):
+            os.mkdir(config['CAPTCHA_IMAGE_PATH'])
         image.write(
             self.value,
             "{}{}.png".format(
@@ -94,6 +98,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
+    email = db.Column(db.String(64), unique=True, index=True)
+    email_verifed = db.Column(db.Boolean, default=False)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -113,12 +119,42 @@ class User(UserMixin, db.Model):
     def revoke_token(self):
         self.token_expiration = datetime.utcnow() - timedelta(seconds=1)
 
+    def get_email_confirmation_token(self, expires_in=600):
+        return jwt.encode(
+            {'confirm_email': self.id, 'exp': time() + expires_in},
+            config['SECRET_KEY'], algorithm='HS256'
+        ).decode('utf-8')
+
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            config['SECRET_KEY'], algorithm='HS256'
+        ).decode('utf-8')
+
     @staticmethod
     def check_token(token):
         user = User.query.filter_by(token=token).first()
         if user is None or user.token_expiration < datetime.utcnow():
             return None
         return user
+
+    @staticmethod
+    def verify_email_confirmation_token(token):
+        try:
+            id = jwt.decode(token, config['SECRET_KEY'],
+                            algorithms=['HS256'])['confirm_email']
+        except:
+            return
+        return User.query.get(id)
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
 
 
 @login.user_loader

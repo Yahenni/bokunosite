@@ -1,0 +1,9 @@
+Уважаемый пользователь, {{ user.username }}.
+
+Пожалуйста, подвердите вашу почту.
+Перейдите по ссылке:
+{{ url_for('auth.confirm_email', token=token, _external=True) }}
+
+С уважением,
+
+Boku no Team.
