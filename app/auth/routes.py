@@ -12,13 +12,13 @@ from app.email import send_email_confirmation, send_password_reset
 def login():
     if current_user.is_authenticated:
         flash('Вы уже вошли')
-        return redirect(url_for('index'))
+        return redirect(url_for('base.index'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if not user.email_verifed:
             flash('С начала подтвердите вашу почту.')
-            redirect(url_for('base.index'))
+            return redirect(url_for('base.index'))
         if user is None or not user.check_password(form.password.data):
             flash('Неправильный пароль или имя пользователя', 'error')
             return redirect(url_for('.login'))
@@ -97,7 +97,7 @@ def signup():
         db.session.commit()
         send_email_confirmation(user)
         flash("Пожалуйста, подвердите вашу почту."
-              " Письмо уже выслано")
+              " Письмо уже выслано. Проверьте спам.")
         return redirect(url_for('base.index'))
     return render_template(
         'signup.html',
