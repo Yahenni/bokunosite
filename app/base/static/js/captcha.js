@@ -15,7 +15,7 @@ var get_captcha = function() {
 };
 
 var refresh_captcha = function () {
-	var jqxhr = $.ajax("/api/captcha/" + hashkey, {
+	var jqxhr = $.ajax("/api/captcha/" + hashkey + "/", {
 		contentType: 'application/json',
 		type: 'GET',
 	})
