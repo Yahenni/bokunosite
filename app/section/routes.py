@@ -6,7 +6,7 @@ from flask_login import current_user, login_required
 from app import db, codemirror, config
 from app.models import Section, Article, CaptchaStore
 from app.section import section
-from .forms import ArticlePostForm
+from .forms import ArticlePostForm, AnonArticlePostForm
 
 
 @section.route('/<shortname>/')
@@ -39,7 +39,11 @@ def article(shortname, article_id):
 
 @section.route('/post', methods=['POST', 'GET'])
 def post():
-    form = ArticlePostForm()
+    if current_user.is_authenticated:
+        form = ArticlePostForm()
+    else:
+        print("AnonForm")
+        form = AnonArticlePostForm()
     form.section.choices = [
         (s.id, s.longname) for s in Section.query.all()
     ]
@@ -55,14 +59,29 @@ def post():
         captcha.remove_picture()
         db.session.delete(captcha)
         db.session.commit()
-        article = Article(
-            markdown_body=form.data.data,
-            title=form.title.data,
-            section_id=form.section.data,
-            poster_name=form.username.data,
-            description=form.description.data,
-        )
-        article.create_tripcode(form.password.data)
+
+        if len(form.data.data) > 25000:
+            flash('Текст слишком длинный')
+            return redirect(url_for('.post'))
+
+        if current_user.is_authenticated:
+            article = Article(
+                markdown_body=form.data.data,
+                title=form.title.data,
+                section_id=form.section.data,
+                poster_name=current_user.username,
+                description=form.description.data,
+                anonymous=False
+            )
+        else:
+            article = Article(
+                markdown_body=form.data.data,
+                title=form.title.data,
+                section_id=form.section.data,
+                poster_name=form.username.data,
+                description=form.description.data,
+            )
+            article.create_tripcode(form.password.data)
         article.create_html()
         db.session.add(article)
         db.session.commit()

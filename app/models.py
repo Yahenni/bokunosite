@@ -38,6 +38,7 @@ class Article(db.Model):
     section_id = db.Column(db.Integer, db.ForeignKey('section.id'))
     poster_name = db.Column(db.String(64))
     description = db.Column(db.String())
+    anonymous = db.Column(db.Boolean, default=True)
 
     def create_tripcode(self, password):
         self.tripcode = sha256(password.encode("utf-8")).hexdigest()[:19]

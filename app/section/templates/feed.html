@@ -23,9 +23,12 @@
 	    {% if article.description %}
 	    <p class="mb-1">{{ article.description }}</p>
 	    {% endif %}
-	    <small class="text-secondary" style="display:inline;">Автор: {{ article.poster_name }} (</small>
-	    <small class="text-success" style="display:inline;">{{ article.tripcode }}</small>
-	    <small class="text-secondary" style="display:inline;">)</small>
+	    <small class="text-secondary" style="display:inline;">Автор: {{ article.poster_name }}</small>
+	    {% if article.anonymous %}
+	    <small class="text-secondary" style="display:inline;">
+	    (<small class="text-success" style="display:inline;">{{ article.tripcode }}</small>)
+	    </small>
+    	    {% endif %}
 	</a>
 </li>
 {% endfor %}

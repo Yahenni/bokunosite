@@ -8,16 +8,7 @@ from wtforms.validators import DataRequired, Length, \
 
 
 class ArticlePostForm(FlaskForm):
-    username = StringField('Имя: ', default="Анонимус")
     section = SelectField('Раздел: ', coerce=int)
-    password = PasswordField(
-        'Пароль: ',
-        validators=[
-            InputRequired(),
-            EqualTo('confirm', message='Пароли должны совпадать')
-        ]
-    )
-    confirm = PasswordField('Повторите пароль: ')
     title = StringField(
         'Название: ',
         validators=[DataRequired(), Length(min=3, max=80)])
@@ -32,3 +23,15 @@ class ArticlePostForm(FlaskForm):
     data = CodeMirrorField(language='markdown', config={'lineNumbers': 'true'})
     hash = HiddenField(label=None)
     submit = SubmitField("Отправить")
+
+
+class AnonArticlePostForm(ArticlePostForm):
+    username = StringField('Имя: ', default="Анонимус")
+    password = PasswordField(
+        'Пароль: ',
+        validators=[
+            InputRequired(),
+            EqualTo('confirm', message='Пароли должны совпадать')
+        ]
+    )
+    confirm = PasswordField('Повторите пароль: ')

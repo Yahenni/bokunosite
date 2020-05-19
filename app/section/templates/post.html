@@ -10,14 +10,23 @@
 }
 {% endblock style %}
 {% block content %}
-<form method="post">
-{{ form.hidden_tag(form.csrf_token, form.hash, form.username) }}
+	<form method="post">
+		{% if current_user.is_authenticated %}
+			{{ form.hidden_tag(form.csrf_token, form.hash) }}
+		{% else %}
+			{{ form.hidden_tag(form.csrf_token, form.hash, form.username) }}
+		{% endif %}
 <div class="row">
 	<div class="col-sm-8">
-		{{ render_field(form.username) }}
-		{{ render_field(form.section) }}
-		{{ render_field(form.password) }}
-		{{ render_field(form.confirm) }}
+		{% if not current_user.is_authenticated %}
+			{{ render_field(form.username) }}
+			{{ render_field(form.password) }}
+			{{ render_field(form.confirm) }}
+		{% else %}
+			{{ render_field(form.section) }}
+			{{ render_field(form.title) }}
+			{{ render_field(form.description) }}
+		{% endif %}
 	</div>
 	<div class="col-sm-4 d-flex">
 		<div class="card" style="width:100%; margin-top:30px;">
@@ -38,8 +47,10 @@
 		</div>
 	</div>
 </div>
+{% if not current_user.is_authenticated %}
 {{ render_field(form.title) }}
 {{ render_field(form.description) }}
+{% endif %}
 <p>Текст поста:</p>
 <div class="mb-3">
 <nav>

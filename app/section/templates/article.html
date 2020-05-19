@@ -10,9 +10,11 @@
 			<li class="nav-item">
 				<p class="text-secondary">Автор: {{ article.poster_name }} (</p>
 			</li>
+			{% if article.anonymous %}
 			<li class="nav-item">
 				<p class="text-success">{{ article.tripcode }}</p>
 			</li>
+			{% endif %}
 			<li class="nav-item">
 				<p class="text-secondary">)</p>
 			</li>
