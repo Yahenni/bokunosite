@@ -27,7 +27,7 @@ def refresh_captcha(hash):
         return not_found("captcha not found")
     captcha.remove()
     db.session.commit()
-    return redirect(url_for('api.get_captcha'))
+    return get_captcha()
 
 
 @api.route('/captcha/<hash>/<text>')

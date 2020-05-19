@@ -71,16 +71,5 @@ $("#captcha-validate").click(function () {
 });
 
 $("#captcha-refresh").click(function () {
-	var text = $("#captcha-text").val();
-	$.ajax("/api/captcha/" + hashkey + "/", {
-		contentType: 'application/json',
-		type: 'GET',
-	})
-	.done(function() {
-		console.log("Captcha refreshed");
-	})
-	.fail(function() {
-		console.log("Captcha not refreshed");
-		refresh_captcha();
-	});
+	refresh_captcha();
 });
