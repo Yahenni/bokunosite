@@ -8,7 +8,6 @@ from app.models import Section
 @base.route('/')
 @base.route('/index')
 def index():
-    print(url_for('.static', filename="kot.png"))
     return render_template(
         "index.html",
         title="Index Page",

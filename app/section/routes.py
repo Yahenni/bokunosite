@@ -42,7 +42,6 @@ def post():
     if current_user.is_authenticated:
         form = ArticlePostForm()
     else:
-        print("AnonForm")
         form = AnonArticlePostForm()
     form.section.choices = [
         (s.id, s.longname) for s in Section.query.all()
@@ -82,6 +81,7 @@ def post():
                 description=form.description.data,
             )
             article.create_tripcode(form.password.data)
+
         article.create_html()
         db.session.add(article)
         db.session.commit()
