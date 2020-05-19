@@ -91,6 +91,10 @@ class CaptchaStore(db.Model):
             filename='captcha/{}.png'.format(self.hash)
         )
 
+    def remove(self):
+        self.remove_picture()
+        db.session.delete(self)
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
